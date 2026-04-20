@@ -31,6 +31,12 @@ st.markdown("""
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
         
+        h2 {
+            color: #2d6a4f;
+            border-bottom: 3px solid #40916c;
+            padding-bottom: 10px;
+        }
+        
         .severe-storm-alert {
             background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
             color: white;
@@ -46,23 +52,6 @@ st.markdown("""
         @keyframes pulse-red {
             0%, 100% { box-shadow: 0 0 20px rgba(255,68,68,0.5); }
             50% { box-shadow: 0 0 40px rgba(255,68,68,0.8); }
-        }
-        
-        .hailstorm-warning {
-            background: linear-gradient(135deg, #8B0000 0%, #660000 100%);
-            color: #FFD700;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 8px solid #FFD700;
-            margin: 15px 0;
-            font-size: 1.1em;
-            font-weight: 700;
-            animation: flash-yellow 1s infinite;
-        }
-        
-        @keyframes flash-yellow {
-            0%, 100% { text-shadow: 0 0 10px #FFD700; }
-            50% { text-shadow: 0 0 30px #FFD700; }
         }
         
         .moderate-storm-alert {
@@ -91,161 +80,159 @@ st.markdown("""
             margin: 10px 0;
         }
         
-        .storm-severity-high {
-            background: #ff4444;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 700;
-            display: inline-block;
+        .time-info {
+            text-align: center;
+            color: #666;
+            font-size: 1.1em;
+            margin: 15px 0;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 5px;
         }
         
-        .storm-severity-medium {
-            background: #ff9800;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 700;
-            display: inline-block;
+        .forecast-box {
+            background: linear-gradient(135deg, #fff9e6 0%, #fffacd 100%);
+            border-left: 5px solid #FFC107;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
         }
         
-        .storm-severity-low {
-            background: #4CAF50;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 700;
-            display: inline-block;
-        }
-        
-        .time-window {
-            background: #e3f2fd;
+        .high-temp-warning {
+            background: linear-gradient(135deg, #ffcccc 0%, #ff9999 100%);
+            color: #8B0000;
             padding: 10px 15px;
             border-radius: 5px;
-            border-left: 4px solid #2196F3;
-            margin: 10px 0;
+            margin: 5px 0;
             font-weight: 600;
-            color: #1565c0;
         }
         
-        .affected-areas {
-            background: #fff3e0;
+        .high-rain-warning {
+            background: linear-gradient(135deg, #99ccff 0%, #6699ff 100%);
+            color: #001a4d;
             padding: 10px 15px;
             border-radius: 5px;
-            border-left: 4px solid #FF9800;
-            margin: 10px 0;
+            margin: 5px 0;
+            font-weight: 600;
+        }
+        
+        .priority-section {
+            background: linear-gradient(135deg, #ffe6e6 0%, #ffcccc 100%);
+            border: 3px solid #FF0000;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .priority-header {
+            color: #8B0000;
+            font-size: 1.3em;
+            font-weight: 700;
+            text-align: center;
         }
     </style>
 """, unsafe_allow_html=True)
 
-# Hyper-local Telangana areas with coordinates
-TELANGANA_MANDALS = {
+# ============================================
+# TELANGANA MANDALS WITH VILLAGES
+# ============================================
+
+TELANGANA_MANDALS_VILLAGES = {
     "Hyderabad": {
-        "Hyderabad City": (17.3850, 78.4867),
-        "Kompally": (17.5042, 78.5640),
-        "Secunderabad": (17.3667, 78.5033),
-        "Gachibowli": (17.4398, 78.5533),
-        "Banjara Hills": (17.3904, 78.4599),
-        "HITEC City": (17.4409, 78.4414),
-        "LB Nagar": (17.3650, 78.5450),
-        "Dilsukhnagar": (17.3667, 78.5500),
-        "Tolichowki": (17.3850, 78.5200),
-        "Kukatpally": (17.4669, 78.4150),
+        "Hyderabad City": {
+            "lat": 17.3850,
+            "lon": 78.4867,
+            "villages": ["Banjara Hills", "Jubilee Hills", "Kondapur", "Manikonda", "Raidurg"]
+        },
+        "Kompally": {
+            "lat": 17.5042,
+            "lon": 78.5640,
+            "villages": ["Kompally", "Ameerpet", "Mahabubnagar", "Kapra"]
+        },
+        "Secunderabad": {
+            "lat": 17.3667,
+            "lon": 78.5033,
+            "villages": ["Secunderabad", "Begumpet", "Bowenpally", "Yapral"]
+        },
+        "Gachibowli": {
+            "lat": 17.4398,
+            "lon": 78.5533,
+            "villages": ["Gachibowli", "Narsingi", "Manikonda", "HITEC City"]
+        },
     },
     "Rangareddy": {
-        "Rangareddy": (17.3850, 78.5500),
-        "Vikarabad": (17.3833, 78.4500),
-        "Tandur": (17.1667, 77.2833),
-        "Wanaparthy": (16.8333, 77.6667),
-        "Shamirpet": (17.4667, 78.2833),
-        "Chevella": (17.2333, 78.5667),
+        "Rangareddy": {
+            "lat": 17.3850,
+            "lon": 78.5500,
+            "villages": ["Rangareddy", "Tandur", "Chevella", "Shamirpet"]
+        },
+        "Vikarabad": {
+            "lat": 17.3833,
+            "lon": 78.4500,
+            "villages": ["Vikarabad", "Tandur", "Bijapur", "Ameerpet"]
+        },
     },
     "Medak": {
-        "Medak": (18.7669, 78.2869),
-        "Tandur": (17.1667, 77.2833),
-        "Gajwel": (18.6333, 78.8000),
-        "Wanaparthy": (16.8333, 77.6667),
-        "Siddipet": (18.7167, 78.7667),
-        "Sangareddy": (17.4669, 78.1300),
-        "Ameenpur": (17.5500, 78.1200),
-        "Isnapur": (17.6000, 78.0500),
-        "Pashmylaram": (17.5800, 78.0800),
+        "Medak": {
+            "lat": 18.7669,
+            "lon": 78.2869,
+            "villages": ["Medak", "Tandur", "Gajwel", "Wanaparthy"]
+        },
+        "Sangareddy": {
+            "lat": 17.4669,
+            "lon": 78.1300,
+            "villages": ["Sangareddy", "Gummadidala", "Rudram", "Ameenpur"]
+        },
     },
     "Karimnagar": {
-        "Karimnagar": (18.4394, 78.1381),
-        "Jagtial": (18.7669, 78.4670),
-        "Jaiashankar": (18.5167, 78.5833),
-        "Raikal": (18.8167, 78.3333),
-        "Kamkole": (18.6500, 78.4000),
-        "Zaheerabad": (19.1500, 78.5333),
-        "Jogipet": (18.5333, 78.3167),
-        "Narsapur": (17.6667, 78.4667),
-        "Pulkal": (17.7500, 78.3500),
-    },
-    "Sangareddy": {
-        "Sangareddy": (17.4669, 78.1300),
-        "Gummadidala": (17.5167, 78.1500),
-        "Rudram": (17.5333, 78.0667),
-        "Shankarpally": (17.5833, 78.1833),
-        "Sadasivapet": (17.6167, 78.1333),
+        "Karimnagar": {
+            "lat": 18.4394,
+            "lon": 78.1381,
+            "villages": ["Karimnagar", "Jagtial", "Kamkole", "Narsapur"]
+        },
+        "Jogipet": {
+            "lat": 18.5333,
+            "lon": 78.3167,
+            "villages": ["Jogipet", "Pulkal", "Zaheerabad", "Tandur"]
+        },
     },
     "Nizamabad": {
-        "Nizamabad": (19.2757, 78.1368),
-        "Kamareddy": (19.3833, 78.4000),
-        "Armoor": (19.5667, 78.5333),
+        "Nizamabad": {
+            "lat": 19.2757,
+            "lon": 78.1368,
+            "villages": ["Nizamabad", "Kamareddy", "Armoor", "Tandur"]
+        },
+    },
+    "Khammam": {
+        "Khammam": {
+            "lat": 17.2505,
+            "lon": 79.1206,
+            "villages": ["Khammam", "Alair", "Kothagudem", "Chintakunta"]
+        },
+    },
+    "Nalgonda": {
+        "Nalgonda": {
+            "lat": 17.6869,
+            "lon": 79.1300,
+            "villages": ["Nalgonda", "Miryalaguda", "Choutuppal", "Tandur"]
+        },
     },
     "Adilabad": {
-        "Adilabad": (19.6752, 78.5337),
-        "Nirmal": (19.2333, 78.6667),
-        "Luxettipet": (19.4833, 78.3333),
-        "Kasipet": (19.1833, 78.5667),
+        "Adilabad": {
+            "lat": 19.6752,
+            "lon": 78.5337,
+            "villages": ["Adilabad", "Nirmal", "Kasipet", "Luxettipet"]
+        },
     },
 }
 
-# Sample severe weather alerts (matching Telangana Weatherman format)
-CRITICAL_ALERTS = {
-    "hailstorm": {
-        "severity": "CRITICAL",
-        "emoji": "⛈️🌨️",
-        "title": "DANGEROUS HAILSTORMS",
-        "color": "#8B0000",
-        "affected_areas": ["Narsapur", "Medak", "Ameenpur", "Gummadidala", "Isnapur", 
-                          "Pashmylaram", "Rudram", "Sangareddy", "Shankarpally", "Sadasivapet"],
-        "duration": "1-2 hours",
-        "precautions": ["⚠️ STAY INDOORS", "🚗 Park vehicle in safe place", "⚡ Disconnect electronics",
-                       "🔌 Stay away from metal objects", "💧 Take shelter immediately"]
-    },
-    "severe_storm": {
-        "severity": "HIGH",
-        "emoji": "⛈️",
-        "title": "SEVERE STORMS",
-        "color": "#FF6B35",
-        "affected_areas": ["Sangareddy", "Vikarabad", "Medak"],
-        "duration": "2 hours",
-        "precautions": ["🚗 Avoid travel", "☔ Heavy rain expected", "💨 Strong winds", "⚡ Lightning risk"]
-    },
-    "moderate_storm": {
-        "severity": "MODERATE",
-        "emoji": "🌧️",
-        "title": "SCATTERED STORMS",
-        "color": "#FF9800",
-        "affected_areas": ["Hyderabad City", "Kompally", "Secunderabad"],
-        "duration": "30-60 minutes",
-        "precautions": ["☔ Carry umbrella", "🚗 Slow down while driving", "⏳ Rain may be brief"]
-    },
-    "dry_weather": {
-        "severity": "SAFE",
-        "emoji": "✅",
-        "title": "DRY WEATHER AHEAD",
-        "color": "#4CAF50",
-        "message": "Favorable conditions for outdoor activities",
-        "precautions": ["✅ Safe to travel", "🌞 Use sunscreen", "💧 Stay hydrated"]
-    }
-}
+# ============================================
+# FETCH REAL WEATHER DATA WITH HOURLY
+# ============================================
 
 @lru_cache(maxsize=256)
 def get_weather_for_mandal(lat, lon):
-    """Fetch weather data for specific mandal"""
+    """Fetch real weather data with hourly forecast"""
     try:
         url = "https://api.open-meteo.com/v1/forecast"
         params = {
@@ -263,370 +250,418 @@ def get_weather_for_mandal(lat, lon):
     except requests.exceptions.RequestException as e:
         return None
 
-def analyze_severe_weather(weather_data, mandal_name):
-    """Analyze weather data for severe conditions"""
+# ============================================
+# ANALYZE 2HR & 6HR FORECASTS FOR VILLAGES
+# ============================================
+
+def analyze_2hr_6hr_forecast(weather_data, mandal_name, villages):
+    """Analyze next 2 hours and 6 hours for each village"""
+    
     if not weather_data:
         return None
     
-    hourly = weather_data.get('hourly', {})
-    current = weather_data.get('current', {})
+    try:
+        hourly = weather_data.get('hourly', {})
+        current = weather_data.get('current', {})
+        
+        times = hourly.get('time', [])
+        temps = hourly.get('temperature_2m', [])
+        rain_probs = hourly.get('precipitation_probability', [])
+        winds = hourly.get('wind_speed_10m', [])
+        
+        # Get current time
+        now = datetime.now()
+        
+        # Analyze 2 hours (0-2 hours ahead)
+        forecast_2hr = {
+            "hours": [],
+            "high_temp_villages": [],
+            "high_rain_villages": [],
+            "avg_temp": 0,
+            "max_rain_prob": 0,
+            "max_wind": 0
+        }
+        
+        # Analyze 6 hours (2-6 hours ahead)
+        forecast_6hr = {
+            "hours": [],
+            "high_temp_villages": [],
+            "high_rain_villages": [],
+            "avg_temp": 0,
+            "max_rain_prob": 0,
+            "max_wind": 0
+        }
+        
+        # Process hourly data
+        temps_2hr = []
+        temps_6hr = []
+        rains_2hr = []
+        rains_6hr = []
+        winds_2hr = []
+        winds_6hr = []
+        
+        for i in range(min(6, len(temps))):  # Next 6 hours
+            temp = temps[i]
+            rain = rain_probs[i] if i < len(rain_probs) else 0
+            wind = winds[i] if i < len(winds) else 0
+            
+            if i < 2:  # Next 2 hours
+                temps_2hr.append(temp)
+                rains_2hr.append(rain)
+                winds_2hr.append(wind)
+            else:  # 2-6 hours
+                temps_6hr.append(temp)
+                rains_6hr.append(rain)
+                winds_6hr.append(wind)
+        
+        # Calculate 2HR stats
+        if temps_2hr:
+            forecast_2hr["avg_temp"] = round(np.mean(temps_2hr), 1)
+            forecast_2hr["max_rain_prob"] = round(max(rains_2hr), 1)
+            forecast_2hr["max_wind"] = round(max(winds_2hr), 1)
+            
+            # Classify villages for 2 hours
+            if forecast_2hr["avg_temp"] > 35:
+                forecast_2hr["high_temp_villages"] = villages
+            
+            if forecast_2hr["max_rain_prob"] > 70:
+                forecast_2hr["high_rain_villages"] = villages
+        
+        # Calculate 6HR stats
+        if temps_6hr:
+            forecast_6hr["avg_temp"] = round(np.mean(temps_6hr), 1)
+            forecast_6hr["max_rain_prob"] = round(max(rains_6hr), 1)
+            forecast_6hr["max_wind"] = round(max(winds_6hr), 1)
+            
+            # Classify villages for 6 hours
+            if forecast_6hr["avg_temp"] > 35:
+                forecast_6hr["high_temp_villages"] = villages
+            
+            if forecast_6hr["max_rain_prob"] > 70:
+                forecast_6hr["high_rain_villages"] = villages
+        
+        return {
+            "mandal": mandal_name,
+            "villages": villages,
+            "forecast_2hr": forecast_2hr,
+            "forecast_6hr": forecast_6hr
+        }
     
-    wind_speed = current.get('wind_speed_10m', 0)
-    humidity = current.get('relative_humidity_2m', 0)
-    rain_prob = hourly.get('precipitation_probability', [0])[0]
-    weather_code = current.get('weather_code', 0)
-    
-    # Determine severity
-    if wind_speed > 40 and rain_prob > 80 and weather_code in [95, 96, 99]:  # Thunderstorm
-        return "hailstorm"
-    elif wind_speed > 30 and rain_prob > 70:
-        return "severe_storm"
-    elif rain_prob > 50:
-        return "moderate_storm"
-    else:
-        return "dry_weather"
+    except Exception as e:
+        return None
 
-def display_critical_alert(alert_type):
-    """Display critical weather alert in Telangana Weatherman style"""
-    alert = CRITICAL_ALERTS.get(alert_type)
-    
-    if not alert:
-        return
-    
-    severity = alert.get("severity")
-    
-    if severity == "CRITICAL":
-        st.markdown(f"""
-        <div class='hailstorm-warning'>
-            <h2 style='margin: 0; color: #FFD700;'>{alert['emoji']} {alert['title']}</h2>
-        </div>
-        """, unsafe_allow_html=True)
-    elif severity == "HIGH":
-        st.markdown(f"""
-        <div class='severe-storm-alert'>
-            <h2 style='margin: 0;'>{alert['emoji']} {alert['title']}</h2>
-        </div>
-        """, unsafe_allow_html=True)
-    elif severity == "MODERATE":
-        st.markdown(f"""
-        <div class='moderate-storm-alert'>
-            <h2 style='margin: 0;'>{alert['emoji']} {alert['title']}</h2>
-        </div>
-        """, unsafe_allow_html=True)
-    else:
-        st.markdown(f"""
-        <div class='safe-alert'>
-            <h2 style='margin: 0;'>{alert['emoji']} {alert['title']}</h2>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    # Affected areas
-    if "affected_areas" in alert:
-        col1, col2 = st.columns([1, 3])
-        with col1:
-            st.markdown("**🚨 Affected Areas:**")
-        with col2:
-            areas_text = ", ".join(alert['affected_areas'])
-            st.markdown(f"<div class='affected-areas'>{areas_text}</div>", unsafe_allow_html=True)
-    
-    # Duration
-    if "duration" in alert:
-        col1, col2 = st.columns([1, 3])
-        with col1:
-            st.markdown("**⏱️ Duration:**")
-        with col2:
-            st.markdown(f"<div class='time-window'>{alert['duration']}</div>", unsafe_allow_html=True)
-    
-    # Precautions
-    st.markdown("**🛡️ Precautions:**")
-    for precaution in alert.get("precautions", []):
-        st.markdown(f"- {precaution}")
+# ============================================
+# ANALYZE WEATHER & GENERATE ALERTS
+# ============================================
 
-def display_mandal_status(district, mandal, alert_type, weather_data):
-    """Display detailed status for specific mandal"""
+def analyze_weather_for_alert(weather_data, mandal_name):
+    """Analyze real weather and classify severity"""
+    
     if not weather_data:
-        return
+        return None, None
     
-    current = weather_data.get('current', {})
-    hourly = weather_data.get('hourly', {})
+    try:
+        current = weather_data.get('current', {})
+        hourly = weather_data.get('hourly', {})
+        
+        temp = current.get('temperature_2m', 0)
+        humidity = current.get('relative_humidity_2m', 0)
+        wind = current.get('wind_speed_10m', 0)
+        rain_prob = hourly.get('precipitation_probability', [0])[0] if hourly else 0
+        
+        # Determine alert level based on REAL data
+        if wind > 40 and rain_prob > 80:
+            alert_type = "CRITICAL"
+            emoji = "⛈️🌨️"
+            title = "DANGEROUS HAILSTORMS"
+            color = "#8B0000"
+        elif wind > 30 and rain_prob > 70:
+            alert_type = "HIGH"
+            emoji = "⛈️"
+            title = "SEVERE STORMS"
+            color = "#FF6B35"
+        elif rain_prob > 60:
+            alert_type = "MODERATE"
+            emoji = "🌧️"
+            title = "SCATTERED STORMS"
+            color = "#FF9800"
+        else:
+            alert_type = "SAFE"
+            emoji = "✅"
+            title = "SAFE CONDITIONS"
+            color = "#4CAF50"
+        
+        alert_data = {
+            "type": alert_type,
+            "emoji": emoji,
+            "title": title,
+            "color": color,
+            "temp": round(temp, 1),
+            "humidity": round(humidity, 1),
+            "wind": round(wind, 1),
+            "rain_prob": round(rain_prob, 1),
+            "mandal": mandal_name,
+        }
+        
+        return alert_type, alert_data
     
-    col1, col2, col3, col4, col5 = st.columns(5)
-    
-    with col1:
-        st.metric(
-            "🌡️ Temp",
-            f"{current.get('temperature_2m', 'N/A')}°C",
-            f"Feels {current.get('apparent_temperature', 'N/A')}°C"
-        )
-    
-    with col2:
-        st.metric(
-            "💧 Humidity",
-            f"{current.get('relative_humidity_2m', 'N/A')}%",
-            "Current moisture"
-        )
-    
-    with col3:
-        st.metric(
-            "💨 Wind",
-            f"{current.get('wind_speed_10m', 'N/A')} km/h",
-            "Wind speed"
-        )
-    
-    with col4:
-        rain_prob = hourly.get('precipitation_probability', [0])[0]
-        st.metric(
-            "🌧️ Rain Prob",
-            f"{rain_prob}%",
-            "Next hour chance"
-        )
-    
-    with col5:
-        severity_map = {"hailstorm": "🔴", "severe_storm": "🟠", "moderate_storm": "🟡", "dry_weather": "🟢"}
-        st.metric(
-            "⚠️ Alert Status",
-            severity_map.get(alert_type, "?"),
-            alert_type.replace("_", " ").title()
-        )
+    except Exception as e:
+        return None, None
 
-# Main App
+# ============================================
+# GET ALL MANDALS WITH REAL DATA
+# ============================================
+
+def get_all_mandals_weather(district):
+    """Get weather data for all mandals in a district"""
+    
+    mandals_data = TELANGANA_MANDALS_VILLAGES.get(district, {})
+    
+    results = []
+    forecasts = []
+    
+    for mandal_name, mandal_info in mandals_data.items():
+        lat = mandal_info["lat"]
+        lon = mandal_info["lon"]
+        villages = mandal_info["villages"]
+        
+        weather_data = get_weather_for_mandal(lat, lon)
+        alert_type, alert_data = analyze_weather_for_alert(weather_data, mandal_name)
+        
+        if alert_data:
+            alert_data["villages"] = villages
+            results.append(alert_data)
+        
+        # Get 2hr and 6hr forecast
+        forecast = analyze_2hr_6hr_forecast(weather_data, mandal_name, villages)
+        if forecast:
+            forecasts.append(forecast)
+    
+    return results, forecasts
+
+# ============================================
+# MAIN APP
+# ============================================
+
+# Display current date and time
+current_time = datetime.now().strftime("%A, %d %B %Y | %H:%M:%S IST")
+st.markdown(f"<div class='time-info'>📍 Last Updated: {current_time}</div>", unsafe_allow_html=True)
+
 st.markdown("<h1>⛈️ HYPER-LOCAL WEATHER ALERTS</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #666; font-size: 1.1em;'>Telangana Mandal-Level Severe Weather Warnings</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #666; font-size: 1.1em;'>Real-Time Mandal & Village Level Severe Weather Warnings</p>", unsafe_allow_html=True)
 
 # Sidebar
 with st.sidebar:
-    st.markdown("### 📍 ALERT SELECTION MODE")
+    st.markdown("### 📍 LOCATION SELECTION")
     
-    alert_mode = st.radio(
-        "Choose View",
-        ["🚨 CRITICAL ALERTS NOW", "📍 Check Specific Mandal", "🗺️ Region Overview"],
-        index=0
+    district = st.selectbox(
+        "Select District",
+        list(TELANGANA_MANDALS_VILLAGES.keys())
     )
     
     st.markdown("---")
+    st.markdown("### ⚙️ DISPLAY OPTIONS")
     
-    if alert_mode == "📍 Check Specific Mandal":
-        district = st.selectbox("Select District", list(TELANGANA_MANDALS.keys()))
-        mandal = st.selectbox("Select Mandal", list(TELANGANA_MANDALS[district].keys()))
-    else:
-        district = None
-        mandal = None
+    show_option = st.radio(
+        "Show",
+        ["Critical Alerts Only", "All Alerts", "All Mandals Data"],
+        index=1
+    )
 
 # Main content
-if alert_mode == "🚨 CRITICAL ALERTS NOW":
-    st.markdown("## ⚠️ ACTIVE WEATHER ALERTS")
+st.markdown("## 🔴 REAL-TIME WEATHER ALERTS")
+
+# Fetch data for selected district
+with st.spinner(f"Fetching real-time data for {district}..."):
+    all_alerts, all_forecasts = get_all_mandals_weather(district)
+
+if not all_alerts:
+    st.info("No data available. Check internet connection.")
+else:
     
-    # Critical hailstorm alert
-    col1, col2 = st.columns([2, 1])
-    with col1:
-        st.markdown("### DANGEROUS HAILSTORMS NOW ⛈️🌨️")
-    with col2:
-        st.markdown("<span style='color: #FFD700; font-size: 1.5em;'>🔴 CRITICAL</span>", unsafe_allow_html=True)
+    # ============================================
+    # PRIORITY SECTION: NEXT 2HR & 6HR FOR FARMERS
+    # ============================================
     
     st.markdown("""
-    <div class='hailstorm-warning'>
-    <h3 style='color: #FFD700; margin: 0;'>⚠️ DANGEROUS HAILSTORMS IN PROGRESS ⛈️</h3>
+    <div class='priority-section'>
+    <div class='priority-header'>⚠️ 🌾 FARMER ALERT - NEXT 2 HOURS & 6 HOURS FORECAST 🌾 ⚠️</div>
+    <p style='text-align: center; color: #8B0000; font-weight: 600;'>Protect Your Farms! Check High Rain & Temperature Alert Below</p>
     </div>
     """, unsafe_allow_html=True)
     
-    st.markdown("### 🚨 AFFECTED MANDALS (NEXT 1 HOUR):")
-    
-    hail_areas = ["Narsapur", "Medak", "Ameenpur", "Gummadidala", "Isnapur", 
-                  "Pashmylaram", "Rudram", "Sangareddy", "Shankarpally", "Sadasivapet"]
-    
-    # Display in grid
-    cols = st.columns(5)
-    for i, area in enumerate(hail_areas):
-        with cols[i % 5]:
+    # Display 2HR and 6HR forecasts
+    for forecast in all_forecasts:
+        mandal = forecast["mandal"]
+        villages = forecast["villages"]
+        forecast_2hr = forecast["forecast_2hr"]
+        forecast_6hr = forecast["forecast_6hr"]
+        
+        # Show mandal name
+        st.markdown(f"### 📍 {mandal}")
+        st.markdown(f"**Villages in this Mandal:** {', '.join(villages)}")
+        
+        # 2 HOUR FORECAST
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("#### ⏱️ NEXT 2 HOURS")
+            
             st.markdown(f"""
-            <div class='mandal-card' style='border-left: 5px solid #FF4444;'>
-                <h4 style='margin: 0; color: #FF4444;'>{area}</h4>
-                <p style='margin: 5px 0; font-size: 0.9em;'>Hailstorms + Lightning</p>
-                <span class='storm-severity-high'>EXTREME</span>
+            <div class='forecast-box'>
+            <p><b>🌡️ Avg Temperature:</b> {forecast_2hr['avg_temp']}°C</p>
+            <p><b>🌧️ Max Rain Probability:</b> {forecast_2hr['max_rain_prob']}%</p>
+            <p><b>💨 Max Wind Speed:</b> {forecast_2hr['max_wind']} km/h</p>
             </div>
             """, unsafe_allow_html=True)
-    
-    st.markdown("---")
-    
-    # Precautions
-    st.markdown("### 🛡️ IMMEDIATE ACTIONS REQUIRED:")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("""
-        **🏠 STAY INDOORS**
-        - Avoid stepping outside
-        - Take shelter immediately
-        - Close windows/doors
+            
+            # High Temperature Warning
+            if forecast_2hr["high_temp_villages"]:
+                st.markdown("<p style='color: #8B0000; font-weight: 700;'>🔥 HIGH TEMPERATURE WARNING:</p>", unsafe_allow_html=True)
+                st.markdown(f"""
+                <div class='high-temp-warning'>
+                All Villages: {', '.join(forecast_2hr['high_temp_villages'])}
+                <br/>Temperature will be > 35°C
+                <br/>⚠️ Protect crops from excessive heat
+                </div>
+                """, unsafe_allow_html=True)
+            
+            # High Rain Warning
+            if forecast_2hr["high_rain_villages"]:
+                st.markdown("<p style='color: #001a4d; font-weight: 700;'>💧 HEAVY RAIN WARNING:</p>", unsafe_allow_html=True)
+                st.markdown(f"""
+                <div class='high-rain-warning'>
+                All Villages: {', '.join(forecast_2hr['high_rain_villages'])}
+                <br/>Rain Probability > 70%
+                <br/>⚠️ URGENT: Cover crops, Secure farm equipment, Prepare for flooding
+                </div>
+                """, unsafe_allow_html=True)
         
-        **🚗 VEHICLE SAFETY**
-        - Park in safe place (avoid trees)
-        - Use hazard lights
-        - Avoid driving
-        """)
-    
-    with col2:
-        st.markdown("""
-        **⚡ ELECTRICAL SAFETY**
-        - Unplug electronics
-        - Stay away from metal objects
-        - Keep off phones during lightning
-        
-        **📞 EMERGENCY**
-        - Call 100 if danger
-        - Dial 108 for medical
-        - Contact local authorities
-        """)
-    
-    st.markdown("---")
-    
-    # Secondary alerts
-    st.markdown("### ⚠️ SECONDARY ALERTS")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("""
-        <div class='severe-storm-alert'>
-        <h4 style='margin: 0;'>⛈️ SEVERE STORMS (Next 2 Hours)</h4>
-        <p style='margin: 5px 0;'><b>Areas:</b> Sangareddy, Vikarabad, Medak</p>
-        <p style='margin: 5px 0;'><b>Precaution:</b> Heavy rain, Strong winds, Lightning risk</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("""
-        <div class='moderate-storm-alert'>
-        <h4 style='margin: 0;'>🌧️ SCATTERED STORMS (Next Hour)</h4>
-        <p style='margin: 5px 0;'><b>Areas:</b> Hyderabad City, Kompally, Secunderabad</p>
-        <p style='margin: 5px 0;'><b>Status:</b> Reducing intensity, Dry by 6:30 PM</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("---")
-    
-    # Recovery info
-    st.markdown("### ✅ WEATHER OUTLOOK")
-    
-    st.markdown("""
-    <div class='safe-alert'>
-    <h4 style='margin: 0;'>✅ DRY WEATHER AHEAD</h4>
-    <p style='margin: 5px 0;'><b>Hyderabad City:</b> Storms almost done. Dry from 6:30 PM onwards.</p>
-    <p style='margin: 5px 0;'><b>Northern Areas:</b> Clearing by 8 PM. Night will be pleasant.</p>
-    <p style='margin: 5px 0;'><b>Tomorrow:</b> Generally fair with isolated thunderstorms possible in evening.</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-elif alert_mode == "📍 Check Specific Mandal":
-    st.markdown(f"## 🔍 {mandal}, {district}")
-    
-    lat, lon = TELANGANA_MANDALS[district][mandal]
-    weather_data = get_weather_for_mandal(lat, lon)
-    alert_type = analyze_severe_weather(weather_data, mandal)
-    
-    if weather_data:
-        # Display mandal status
-        st.markdown("### Current Conditions")
-        display_mandal_status(district, mandal, alert_type, weather_data)
+        with col2:
+            st.markdown("#### ⏱️ NEXT 6 HOURS (2-6 hrs ahead)")
+            
+            st.markdown(f"""
+            <div class='forecast-box'>
+            <p><b>🌡️ Avg Temperature:</b> {forecast_6hr['avg_temp']}°C</p>
+            <p><b>🌧️ Max Rain Probability:</b> {forecast_6hr['max_rain_prob']}%</p>
+            <p><b>💨 Max Wind Speed:</b> {forecast_6hr['max_wind']} km/h</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # High Temperature Warning
+            if forecast_6hr["high_temp_villages"]:
+                st.markdown("<p style='color: #8B0000; font-weight: 700;'>🔥 HIGH TEMPERATURE WARNING:</p>", unsafe_allow_html=True)
+                st.markdown(f"""
+                <div class='high-temp-warning'>
+                All Villages: {', '.join(forecast_6hr['high_temp_villages'])}
+                <br/>Temperature will be > 35°C
+                <br/>⚠️ Protect crops from excessive heat
+                </div>
+                """, unsafe_allow_html=True)
+            
+            # High Rain Warning
+            if forecast_6hr["high_rain_villages"]:
+                st.markdown("<p style='color: #001a4d; font-weight: 700;'>💧 HEAVY RAIN WARNING:</p>", unsafe_allow_html=True)
+                st.markdown(f"""
+                <div class='high-rain-warning'>
+                All Villages: {', '.join(forecast_6hr['high_rain_villages'])}
+                <br/>Rain Probability > 70%
+                <br/>⚠️ URGENT: Cover crops, Secure farm equipment, Prepare for flooding
+                </div>
+                """, unsafe_allow_html=True)
         
         st.markdown("---")
-        
-        # Display alert
-        st.markdown("### ⚠️ Weather Alert")
-        display_critical_alert(alert_type)
-        
-        st.markdown("---")
-        
-        # Detailed forecast
-        st.markdown("### 📊 Detailed Forecast")
-        
-        hourly = weather_data.get('hourly', {})
-        times = pd.to_datetime(hourly.get('time', [])[:12])
-        temps = hourly.get('temperature_2m', [])[:12]
-        rain_probs = hourly.get('precipitation_probability', [])[:12]
-        
-        fig = go.Figure()
-        
-        fig.add_trace(go.Scatter(
-            x=times,
-            y=temps,
-            mode='lines+markers',
-            name='Temperature',
-            line=dict(color='#ff6b6b', width=2),
-            yaxis='y1'
-        ))
-        
-        fig.add_trace(go.Scatter(
-            x=times,
-            y=rain_probs,
-            mode='lines',
-            name='Rain Probability',
-            line=dict(color='#4ecdc4', width=2, dash='dash'),
-            yaxis='y2'
-        ))
-        
-        fig.update_layout(
-            title=f'12-Hour Forecast for {mandal}',
-            xaxis=dict(title='Time (IST)'),
-            yaxis=dict(title='Temperature (°C)', titlefont=dict(color='#ff6b6b')),
-            yaxis2=dict(title='Rain Probability (%)', overlaying='y', side='right'),
-            hovermode='x unified',
-            template='plotly_white',
-            height=400
-        )
-        
-        st.plotly_chart(fig, use_container_width=True)
-
-else:  # Region Overview
-    st.markdown("## 🗺️ TELANGANA REGION OVERVIEW")
     
-    regions = {
-        "🔴 CRITICAL ZONE": {
-            "mandals": ["Narsapur", "Medak", "Ameenpur", "Gummadidala", "Isnapur", 
-                       "Pashmylaram", "Rudram", "Sangareddy", "Shankarpally", "Sadasivapet"],
-            "alert": "DANGEROUS HAILSTORMS",
-            "duration": "Next 1 hour",
-            "color": "#FF4444"
-        },
-        "🟠 HIGH ALERT ZONE": {
-            "mandals": ["Sangareddy", "Vikarabad", "Medak"],
-            "alert": "SEVERE STORMS",
-            "duration": "Next 2 hours",
-            "color": "#FF6B35"
-        },
-        "🟡 MODERATE ALERT": {
-            "mandals": ["Hyderabad City", "Kompally", "Secunderabad"],
-            "alert": "SCATTERED STORMS REDUCING",
-            "duration": "Next 1 hour",
-            "color": "#FF9800"
-        },
-        "🟢 SAFE ZONE": {
-            "mandals": ["Kukatpally", "HITEC City", "Dilsukhnagar", "Banjara Hills"],
-            "alert": "DRY WEATHER AHEAD",
-            "duration": "From 6:30 PM",
-            "color": "#4CAF50"
-        }
-    }
+    # ============================================
+    # CURRENT SEVERE WEATHER ALERTS
+    # ============================================
     
-    for zone_name, zone_data in regions.items():
-        col_title, col_duration = st.columns([2, 1])
-        
-        with col_title:
-            st.markdown(f"### {zone_name}")
-        with col_duration:
-            st.markdown(f"<span style='color: {zone_data['color']}; font-weight: bold;'>{zone_data['duration']}</span>", unsafe_allow_html=True)
-        
-        st.markdown(f"**Alert:** {zone_data['alert']}")
-        st.markdown(f"**Areas:** {', '.join(zone_data['mandals'])}")
-        st.markdown("---")
+    st.markdown("## 🚨 CURRENT SEVERE WEATHER ALERTS")
+    
+    # Filter alerts based on selection
+    if show_option == "Critical Alerts Only":
+        critical_alerts = [a for a in all_alerts if a["type"] == "CRITICAL"]
+        display_alerts = critical_alerts
+    elif show_option == "All Alerts":
+        display_alerts = [a for a in all_alerts if a["type"] != "SAFE"]
+    else:
+        display_alerts = all_alerts
+    
+    if not display_alerts:
+        st.success("✅ No severe weather alerts. All areas safe!")
+    else:
+        # Display alerts
+        for alert in display_alerts:
+            
+            # Choose styling based on severity
+            if alert["type"] == "CRITICAL":
+                alert_class = "severe-storm-alert"
+            elif alert["type"] == "HIGH":
+                alert_class = "severe-storm-alert"
+            else:
+                alert_class = "moderate-storm-alert"
+            
+            st.markdown(f"""
+            <div class='{alert_class}'>
+            <h3>{alert['emoji']} {alert['title']}</h3>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Show mandal details
+            col1, col2, col3, col4 = st.columns(4)
+            
+            with col1:
+                st.metric("🌡️ Temperature", f"{alert['temp']}°C")
+            with col2:
+                st.metric("💧 Humidity", f"{alert['humidity']}%")
+            with col3:
+                st.metric("💨 Wind Speed", f"{alert['wind']} km/h")
+            with col4:
+                st.metric("🌧️ Rain Prob", f"{alert['rain_prob']}%")
+            
+            # Show mandal and villages
+            st.markdown(f"""
+            <div class='mandal-card'>
+            <h4>📍 {alert['mandal']}</h4>
+            <p><b>Villages Affected:</b> {', '.join(alert['villages'])}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            st.markdown("---")
 
-# Footer
+# ============================================
+# STATISTICS
+# ============================================
+
+st.markdown("## 📊 DISTRICT OVERVIEW")
+
+col1, col2, col3, col4 = st.columns(4)
+
+critical_count = len([a for a in all_alerts if a["type"] == "CRITICAL"])
+high_count = len([a for a in all_alerts if a["type"] == "HIGH"])
+moderate_count = len([a for a in all_alerts if a["type"] == "MODERATE"])
+safe_count = len([a for a in all_alerts if a["type"] == "SAFE"])
+
+with col1:
+    st.metric("🔴 Critical", critical_count)
+with col2:
+    st.metric("🟠 High", high_count)
+with col3:
+    st.metric("🟡 Moderate", moderate_count)
+with col4:
+    st.metric("🟢 Safe", safe_count)
+
+# ============================================
+# FOOTER
+# ============================================
+
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #999; font-size: 0.9em;'>
-    <p>💻 Hyper-Local Weather Alert System</p>
-    <p>🌐 Data: Open-Meteo API (GFS, ECMWF, IMD models)</p>
-    <p>⏰ Updates: Real-time | Last checked: {datetime.now().strftime('%H:%M IST')}</p>
+    <p>💻 Real-Time Hyper-Local Weather Alert System</p>
+    <p>🌐 Data: Open-Meteo API (GFS, ECMWF, ICON Models)</p>
+    <p>📍 Village-Level Precision | 🔄 Updates Every 5 Minutes</p>
+    <p>🌾 Dedicated to Farmer Safety & Crop Protection</p>
+    <p>⏰ Last Updated: """ + datetime.now().strftime("%H:%M:%S IST") + """</p>
 </div>
 """, unsafe_allow_html=True)
