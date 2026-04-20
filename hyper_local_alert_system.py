@@ -627,7 +627,6 @@ st.markdown("""
 <div style='text-align: center; color: #999; font-size: 0.9em;'>
     <p>💻 Hyper-Local Weather Alert System</p>
     <p>🌐 Data: Open-Meteo API (GFS, ECMWF, IMD models)</p>
-    <p>📍 Inspired by Telangana Weatherman (@balaji25_t)</p>
     <p>⏰ Updates: Real-time | Last checked: {datetime.now().strftime('%H:%M IST')}</p>
 </div>
 """, unsafe_allow_html=True)
